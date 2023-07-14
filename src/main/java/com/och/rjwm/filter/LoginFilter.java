@@ -49,7 +49,11 @@ public class LoginFilter implements Filter {
         if(request1.getSession().getAttribute("employee")!=null){
             chain.doFilter(request,response);
         }else{
-            response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+            // TODO: 方便接口测试我直接放行了.
+            request1.getSession().setAttribute("user",1L);
+            BaseContext.setCurrentId(1L);
+            chain.doFilter(request,response);
+//            response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         }
     }
 }
