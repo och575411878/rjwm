@@ -2,6 +2,7 @@ package com.och.rjwm.common;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ public class MyMetaObjecthandler implements MetaObjectHandler {
         metaObject.setValue("updateTime", LocalDateTime.now());
         // 如何获取session.
         String employeeID = (String)request.getSession().getAttribute("employee");
+        if(null == employeeID|| StringUtils.isBlank(employeeID)){
+            employeeID = Long.toString((Long) request.getSession().getAttribute("user"));
+        }
         metaObject.setValue("createUser", employeeID);
         metaObject.setValue("updateUser", employeeID);
 
