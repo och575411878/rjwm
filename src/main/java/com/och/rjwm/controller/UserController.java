@@ -7,11 +7,9 @@ import com.och.rjwm.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -95,6 +93,12 @@ public class UserController {
         return R.error("登录失败");
     }
 
+    @Cacheable(value = "userCache",key  ="#id")
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id){
+        User user = userService.getById(id);
+        return user;
+    }
     private String getRandomCode() {
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
