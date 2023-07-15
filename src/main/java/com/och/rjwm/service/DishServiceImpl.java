@@ -51,7 +51,12 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements ID
         LambdaQueryWrapper<DishFlavor> lqw = new LambdaQueryWrapper<>();
         lqw.eq(DishFlavor::getDishId, dishDto.getId());
         dishFlavorService.remove(lqw);
-        dishFlavorService.saveBatch(dishDto.getFlavors());
+        List<DishFlavor> flavors = dishDto.getFlavors();
+        flavors = flavors.stream().map((dishFlavor)->{
+            dishFlavor.setDishId(dishDto.getId());
+            return dishFlavor;
+        }).collect(Collectors.toList());
+        dishFlavorService.saveBatch(flavors);
     }
 
 

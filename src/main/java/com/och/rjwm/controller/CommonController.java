@@ -14,6 +14,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -62,7 +63,10 @@ public class CommonController {
             }
             fileInputStream.close();
             outputStream.close();
-        } catch (IOException e) {
+        } catch (FileNotFoundException fe){
+          log.warn("rjwm的老菜品有bug正常!");
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
